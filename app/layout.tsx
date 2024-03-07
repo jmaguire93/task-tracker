@@ -21,9 +21,9 @@ export default function RootLayout({
       <html lang='en'>
         <body className={inter.className}>
           <Header />
-          <main className='container'>
-            <div className='items-start justify-center min-h-screen flex'>
-              <div className='mt-20'>{children}</div>
+          <main className='container mx-auto'>
+            <div className='justify-center min-h-screen md:flex'>
+              <div className='mt-10'>{children}</div>
             </div>
           </main>
         </body>

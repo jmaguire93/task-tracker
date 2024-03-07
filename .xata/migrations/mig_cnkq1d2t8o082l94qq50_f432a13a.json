@@ -1,0 +1,17 @@
+{
+  "id": "mig_cnkq1d2t8o082l94qq50",
+  "parentID": "mig_cnkq15r3ql9quqjberqg",
+  "checksum": "1:f432a13a5ba9ac0be97c64ac43a5f8185da4c72dd7bb082f48a78106302023e2",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "name",
+          "type": "string",
+          "unique": true
+        },
+        "table": "todos"
+      }
+    }
+  ]
+}

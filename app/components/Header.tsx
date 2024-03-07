@@ -9,13 +9,16 @@ export default function Header() {
 
   return (
     <>
-      <nav className='bg-blue-500 py-4 px-6 flex items-center justify-between mb-5'>
+      <nav className='bg-blue-500 py-4 px-4 flex items-center justify-between mb-5'>
         <div className='flex items-center text-white'>
           <Link href='/'>
-            <div className='text-lg uppercase font-bold ml-4'>Todo App</div>
+            <div className='text-lg uppercase font-bold sm:ml-2'>Todo App</div>
           </Link>
           {user && isLoaded && (
-            <Link href='/dashboard' className='hover:text-gray-200 ml-4'>
+            <Link
+              href='/dashboard'
+              className='hover:text-gray-200 text-sm ml-4'
+            >
               Dashboard
             </Link>
           )}
@@ -30,6 +33,9 @@ export default function Header() {
                 Sign Up
               </Link>
             </>
+          )}
+          {user && isLoaded && (
+            <div className='text-sm mr-3'>Welcome, {user.firstName}</div>
           )}
           <div className='ml-auto'>
             <UserButton afterSignOutUrl='/' />

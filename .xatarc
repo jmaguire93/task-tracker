@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://Josh-Maguire-s-workspace-fiueoq.eu-west-1.xata.sh/db/my-todos-db",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}
