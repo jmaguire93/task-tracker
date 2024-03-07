@@ -10,10 +10,10 @@ npm run dev
 
 This project uses:
 
-NextJS (Framework)
-Clerk (Authentication & user management)
-Xata (Todo data access & storage)
-shadcn/ui (pending use)
+- Next.js (Framework)
+- Clerk (Authentication & user management)
+- Xata (Todo data access & storage)
+- shadcn/ui (pending use)
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
