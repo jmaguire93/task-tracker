@@ -1,6 +1,7 @@
 'use client'
 
 import { UserButton, useUser } from '@clerk/nextjs'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -12,7 +13,12 @@ export default function Header() {
       <nav className='bg-blue-500 py-4 px-4 flex items-center justify-between mb-5'>
         <div className='flex items-center text-white'>
           <Link href='/'>
-            <div className='text-lg uppercase font-bold sm:ml-2'>Todo App</div>
+            <Image
+              src='/logo/app-logo.png'
+              alt='App Logo'
+              width={32}
+              height={32}
+            />
           </Link>
           {user && isLoaded && (
             <Link
