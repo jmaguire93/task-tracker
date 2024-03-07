@@ -22,7 +22,7 @@ const DashboardPage = async () => {
   return (
     <div className='container mx-auto p-6 w-full'>
       <h1 className='text-2xl font-bold mb-5'>My Todos</h1>
-      <TodoForm userId={userId} />
+      <TodoForm />
       <TodoList serializedTodos={serializedTodos} />
     </div>
   )

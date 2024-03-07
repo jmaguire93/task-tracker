@@ -35,7 +35,9 @@ export default function Header() {
             </>
           )}
           {user && isLoaded && (
-            <div className='text-sm mr-3'>Welcome, {user.firstName}</div>
+            <div className='text-sm mr-3'>
+              Welcome, {user.firstName || 'User'}
+            </div>
           )}
           <div className='ml-auto'>
             <UserButton afterSignOutUrl='/' />

@@ -3,7 +3,7 @@
 import { addTodo } from '@/app/server-actions/addTodo'
 import React, { useRef } from 'react'
 
-export default function TodoForm({ userId }: { userId: string }) {
+export default function TodoForm() {
   const ref = useRef<HTMLFormElement>(null)
 
   return (
@@ -11,7 +11,7 @@ export default function TodoForm({ userId }: { userId: string }) {
       className='mt-6 flex gap-x-2 items-center'
       ref={ref}
       action={(formData) => {
-        addTodo(formData, userId)
+        addTodo(formData)
         ref.current?.reset()
       }}
     >
