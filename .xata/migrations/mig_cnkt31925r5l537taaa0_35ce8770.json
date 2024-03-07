@@ -1,0 +1,18 @@
+{
+  "id": "mig_cnkt31925r5l537taaa0",
+  "parentID": "mig_cnkq1maj8l72he9nee10",
+  "checksum": "1:35ce8770464a007e6958f2a5993518a23456410d4efebbaeb4309053fe3643e0",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "userId",
+          "type": "string",
+          "notNull": true,
+          "defaultValue": "null"
+        },
+        "table": "todos"
+      }
+    }
+  ]
+}

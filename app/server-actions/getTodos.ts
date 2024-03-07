@@ -2,8 +2,10 @@
 
 import { getXataClient } from '@/src/xata'
 
-export async function getTodos() {
-  const xataClient = getXataClient()
+export async function getTodosForUser(userId: string) {
+  try {
+    const xataClient = getXataClient()
 
-  return xataClient.db.todos.getMany()
+    return xataClient.db.todos.filter({ userId }).getMany()
+  } catch (error) {}
 }

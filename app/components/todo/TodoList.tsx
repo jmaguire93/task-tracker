@@ -15,10 +15,16 @@ export default function TodoList({
   const todos = JSON.parse(serializedTodos) as Todo[]
 
   return (
-    <div className='mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4'>
-      {todos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} />
-      ))}
+    <div className='overflow-y-auto h-[500px]'>
+      {todos.length === 0 ? (
+        <div>All caught up! Want to add a new todo?</div>
+      ) : (
+        <div className='mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4'>
+          {todos.map((todo) => (
+            <TodoItem key={todo.id} todo={todo} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

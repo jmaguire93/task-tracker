@@ -9,14 +9,15 @@ const schema = z.object({
 })
 
 export async function updateCompleted(formData: FormData, todoId: string) {
-  const completed = formData.get('completed') === 'true'
+  try {
+    const completed = formData.get('completed') === 'true'
+    const validatedForm = schema.parse({
+      completed: completed
+    })
+    const xataClient = getXataClient()
 
-  const validatedForm = schema.parse({
-    completed: completed
-  })
-  const xataClient = getXataClient()
+    await xataClient.db.todos.update(todoId, validatedForm)
 
-  await xataClient.db.todos.update(todoId, validatedForm)
-
-  revalidatePath('/')
+    revalidatePath('/')
+  } catch (error) {}
 }
