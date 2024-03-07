@@ -3,10 +3,14 @@
 import React from 'react'
 import TodoItem from './TodoItem'
 
-interface Todo {
+export interface Todo {
   id: string
   name: string
   completed: boolean
+  xata: {
+    createdAt: string
+    updatedAt: string
+  }
 }
 
 export default function TodoList({
@@ -15,7 +19,7 @@ export default function TodoList({
   const todos = JSON.parse(serializedTodos) as Todo[]
 
   return (
-    <div className='overflow-y-auto h-[500px]'>
+    <div className='overflow-y-auto h-[550px]'>
       {todos.length === 0 ? (
         <div>All caught up! Want to add a new todo?</div>
       ) : (

@@ -1,6 +1,7 @@
 'use client'
 
 import { addTodo } from '@/app/server-actions/addTodo'
+import { Button } from '@/components/ui/button'
 import React, { useRef } from 'react'
 
 export default function TodoForm() {
@@ -30,12 +31,12 @@ export default function TodoForm() {
           className='border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500'
         />
       </div>
-      <button
+      <Button
         type='submit'
-        className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-300 ease-in-out'
+        className=' font-semibold py-2 px-4 rounded-md transition-colors duration-300 ease-in-out'
       >
         Add Todo
-      </button>
+      </Button>
     </form>
   )
 }

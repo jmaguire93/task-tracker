@@ -10,8 +10,8 @@ export default function Header() {
 
   return (
     <>
-      <nav className='bg-blue-500 py-4 px-4 flex items-center justify-between mb-5'>
-        <div className='flex items-center text-white'>
+      <nav className='bg-default border-b py-4 px-4 flex items-center justify-between mb-5 text-sm'>
+        <div className='flex items-center'>
           <Link href='/'>
             <Image
               src='/logo/app-logo.png'
@@ -21,15 +21,12 @@ export default function Header() {
             />
           </Link>
           {user && isLoaded && (
-            <Link
-              href='/dashboard'
-              className='hover:text-gray-200 text-sm ml-4'
-            >
+            <Link href='/dashboard' className='ml-4'>
               Dashboard
             </Link>
           )}
         </div>
-        <div className='text-white flex items-center'>
+        <div className='flex items-center'>
           {!user && isLoaded && (
             <>
               <Link href='/sign-in' className='hover:text-gray-200 mr-4'>

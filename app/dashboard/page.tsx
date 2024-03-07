@@ -20,8 +20,10 @@ const DashboardPage = async () => {
   const serializedTodos = JSON.stringify(todos)
 
   return (
-    <div className='container mx-auto p-6 w-full'>
-      <h1 className='text-2xl font-bold mb-5'>My Todos</h1>
+    <div className='container w-full'>
+      <h1 className='text-2xl font-bold mb-5'>
+        My Todos ({todos?.length || 0})
+      </h1>
       <TodoForm />
       <TodoList serializedTodos={serializedTodos} />
     </div>

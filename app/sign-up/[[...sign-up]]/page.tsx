@@ -3,9 +3,9 @@ import React from 'react'
 
 const SignUpPage = () => {
   return (
-    <>
+    <div className='flex justify-center'>
       <SignUp />
-    </>
+    </div>
   )
 }
 
