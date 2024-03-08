@@ -20,7 +20,7 @@ const DashboardPage = async () => {
   const serializedTodos = JSON.stringify(todos)
 
   return (
-    <div className='container w-full'>
+    <div className='px-2 sm:px-8'>
       <h1 className='text-2xl font-bold mb-5'>
         My Todos ({todos?.length || 0})
       </h1>

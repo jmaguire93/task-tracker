@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div className='text-center'>
       <h1 className='text-3xl font-bold mb-5'>Welcome</h1>
-      <div className='p mb-5'>Please login to handle your todos!</div>
+      <div className='mb-5'>Please login to handle your todos!</div>
     </div>
   )
 }

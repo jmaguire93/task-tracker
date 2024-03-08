@@ -11,21 +11,31 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { formatDistance } from 'date-fns'
 import React, { useEffect, useState } from 'react'
 import { Todo } from './TodoList'
 
-export default function TodoItem({ todo }: { todo: Todo }) {
+interface TodoItemProps {
+  todo: Todo
+  index: number
+}
+
+export default function TodoItem(props: TodoItemProps) {
+  const { todo, index } = props
+
   const [isCompleted, setIsCompleted] = useState(todo.completed)
   const [isEditing, setIsEditing] = useState(false)
   const [name, setName] = useState(todo.name)
   const [createdTime, setCreatedTime] = useState('')
   const [updatedTime, setUpdatedTime] = useState('')
 
-  const handleCheckboxChange = () => {
-    setIsCompleted(!isCompleted)
+  const handleCheckboxChange = (checked: boolean) => {
+    setIsCompleted(checked)
     const formData = new FormData()
-    formData.append('completed', (!isCompleted).toString())
+    formData.append('completed', checked.toString())
     updateCompleted(formData, todo.id)
   }
 
@@ -62,12 +72,14 @@ export default function TodoItem({ todo }: { todo: Todo }) {
         <CardTitle>
           <div>
             {isEditing ? (
-              <input
-                type='text'
+              <Input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 onBlur={handleNameChange}
                 onKeyDown={handleKeyPress}
+                id='name'
+                type='text'
+                name='name'
               />
             ) : (
               <div
@@ -92,33 +104,27 @@ export default function TodoItem({ todo }: { todo: Todo }) {
       </CardHeader>
       <CardFooter>
         <div className='justify-between flex-1 flex'>
-          <form
-            action={() => {
-              deleteTodo(todo.id)
-            }}
+          <Button
+            type='submit'
+            onClick={() => deleteTodo(todo.id)}
+            className='bg-red-500 hover:bg-red-700 font-bold'
           >
-            <input type='hidden' name='id' value={todo.id} />
-            <Button
-              type='submit'
-              className='bg-red-500 hover:bg-red-700 font-bold'
-            >
-              Delete
-            </Button>
-          </form>
+            Delete
+          </Button>
           <div className='flex items-center gap-2'>
-            <input
-              type='checkbox'
-              id='completed'
-              name='completed'
+            <Checkbox
+              id={`completed-${index}`}
               checked={isCompleted}
-              onChange={handleCheckboxChange}
-              className='cursor-pointer rounded-sm'
+              onCheckedChange={handleCheckboxChange}
             />
-            <label
-              className={`${isCompleted ? 'line-through text-gray-500' : ''}`}
+            <Label
+              htmlFor={`completed-${index}`}
+              className={`${
+                isCompleted ? 'line-through opacity-50' : ''
+              } text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70`}
             >
               Completed
-            </label>
+            </Label>
           </div>
         </div>
       </CardFooter>

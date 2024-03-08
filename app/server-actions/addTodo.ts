@@ -3,22 +3,18 @@
 import { getXataClient } from '@/src/xata'
 import { auth } from '@clerk/nextjs'
 import { revalidatePath } from 'next/cache'
-import { z } from 'zod'
 
-const schema = z.object({
-  name: z.string().min(5)
-})
+interface ValidatedFormData {
+  name: string
+}
 
-export async function addTodo(formData: FormData) {
+export async function addTodo(formData: ValidatedFormData) {
   const { userId } = auth()
 
   if (!userId) return
 
   try {
-    const validatedForm = schema.parse({
-      name: formData.get('name')
-    })
-    const todoToAdd = { ...validatedForm, userId }
+    const todoToAdd = { ...formData, userId }
     const xataClient = getXataClient()
 
     await xataClient.db.todos.create(todoToAdd)

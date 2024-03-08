@@ -2,41 +2,62 @@
 
 import { addTodo } from '@/app/server-actions/addTodo'
 import { Button } from '@/components/ui/button'
-import React, { useRef } from 'react'
+import { Input } from '@/components/ui/input'
+import { zodResolver } from '@hookform/resolvers/zod'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form'
+
+const formSchema = z.object({
+  name: z.string().min(5, {
+    message: 'Todo must be at least 5 characters.'
+  })
+})
 
 export default function TodoForm() {
-  const ref = useRef<HTMLFormElement>(null)
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: ''
+    }
+  })
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Type-safe and validated.
+    addTodo(values)
+    form.reset()
+  }
 
   return (
-    <form
-      className='mt-6 flex gap-x-2 items-center'
-      ref={ref}
-      action={(formData) => {
-        addTodo(formData)
-        ref.current?.reset()
-      }}
-    >
-      <div className='mb-6 grow'>
-        <label
-          htmlFor='name'
-          className='block text-sm font-semibold mb-1'
-          aria-label='New Todo'
-        >
-          Name
-        </label>
-        <input
-          id='name'
-          type='text'
-          name='name'
-          className='border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:border-blue-500'
-        />
-      </div>
-      <Button
-        type='submit'
-        className=' font-semibold py-2 px-4 rounded-md transition-colors duration-300 ease-in-out'
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='space-y-8 flex space-x-2 mb-6'
       >
-        Add Todo
-      </Button>
-    </form>
+        <FormField
+          control={form.control}
+          name='name'
+          render={({ field }) => (
+            <FormItem className='grow'>
+              <FormLabel>Todo</FormLabel>
+              <FormControl>
+                <Input placeholder='Enter your todo...' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type='submit'>Add Todo</Button>
+      </form>
+    </Form>
   )
 }
