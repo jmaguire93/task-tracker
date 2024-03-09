@@ -1,8 +1,9 @@
 'use client'
 
-import { deleteTodo } from '@/app/server-actions/deleteTodo'
-import { updateCompleted } from '@/app/server-actions/updateCompleted'
-import { updateName } from '@/app/server-actions/updateName'
+import { deleteTask } from '@/app/server-actions/delete-task'
+import { updateCompleted } from '@/app/server-actions/update-completed'
+import { updateName } from '@/app/server-actions/update-name'
+import { Task } from '@/app/util/types/types'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -16,19 +17,18 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { formatDistance } from 'date-fns'
 import React, { useEffect, useState } from 'react'
-import { Todo } from './TodoList'
 
-interface TodoItemProps {
-  todo: Todo
+interface TaskItemProps {
+  task: Task
   index: number
 }
 
-export default function TodoItem(props: TodoItemProps) {
-  const { todo, index } = props
+export default function TaskItem(props: TaskItemProps) {
+  const { task, index } = props
 
-  const [isCompleted, setIsCompleted] = useState(todo.completed)
+  const [isCompleted, setIsCompleted] = useState(task.completed)
   const [isEditing, setIsEditing] = useState(false)
-  const [name, setName] = useState(todo.name)
+  const [name, setName] = useState(task.name)
   const [createdTime, setCreatedTime] = useState('')
   const [updatedTime, setUpdatedTime] = useState('')
 
@@ -36,14 +36,14 @@ export default function TodoItem(props: TodoItemProps) {
     setIsCompleted(checked)
     const formData = new FormData()
     formData.append('completed', checked.toString())
-    updateCompleted(formData, todo.id)
+    updateCompleted(formData, task.id)
   }
 
   const handleNameChange = () => {
     const formData = new FormData()
     formData.append('name', name)
 
-    updateName(formData, todo.id)
+    updateName(formData, task.id)
     setIsEditing(false)
   }
 
@@ -55,16 +55,16 @@ export default function TodoItem(props: TodoItemProps) {
 
   useEffect(() => {
     setCreatedTime(
-      formatDistance(new Date(todo.xata.createdAt), new Date(), {
+      formatDistance(new Date(task.xata.createdAt), new Date(), {
         addSuffix: true
       })
     )
     setUpdatedTime(
-      formatDistance(new Date(todo.xata.updatedAt), new Date(), {
+      formatDistance(new Date(task.xata.updatedAt), new Date(), {
         addSuffix: true
       })
     )
-  }, [todo.xata.createdAt, todo.xata.updatedAt])
+  }, [task.xata.createdAt, task.xata.updatedAt])
 
   return (
     <Card className='flex flex-col justify-between bg-secondary'>
@@ -106,7 +106,7 @@ export default function TodoItem(props: TodoItemProps) {
         <div className='justify-between flex-1 flex'>
           <Button
             type='submit'
-            onClick={() => deleteTodo(todo.id)}
+            onClick={() => deleteTask(task.id)}
             className='bg-red-500 hover:bg-red-700 font-bold'
           >
             Delete

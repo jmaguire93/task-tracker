@@ -4,6 +4,7 @@ import { UserButton, useUser } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { ThemeSwitcher } from './theme-switcher/theme-switcher'
 
 export default function Header() {
   const { user, isLoaded } = useUser()
@@ -16,17 +17,23 @@ export default function Header() {
             <Image
               src='/logo/app-logo.png'
               alt='App Logo'
-              width={32}
-              height={32}
+              width={40}
+              height={40}
             />
           </Link>
           {user && isLoaded && (
-            <Link href='/dashboard' className='ml-4'>
+            <Link
+              href='/dashboard'
+              className='ml-4  hover:text-accent-foreground'
+            >
               Dashboard
             </Link>
           )}
         </div>
         <div className='flex items-center'>
+          <div className='mr-2'>
+            <ThemeSwitcher />
+          </div>
           {!user && isLoaded && (
             <>
               <Link href='/sign-in' className='hover:text-gray-200 mr-4'>

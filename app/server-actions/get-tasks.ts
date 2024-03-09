@@ -2,7 +2,7 @@
 
 import { getXataClient } from '@/src/xata'
 
-export async function getTodosForUser(userId: string) {
+export async function getTasksForUser(userId: string) {
   try {
     const xataClient = getXataClient()
 

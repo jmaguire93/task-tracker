@@ -2,8 +2,9 @@ import { cn } from '@/lib/utils'
 import { ClerkProvider } from '@clerk/nextjs'
 import type { Metadata } from 'next'
 import { Inter as FontSans } from 'next/font/google'
-import Header from './components/Header'
+import Header from './components/header'
 import './globals.css'
+import { ThemeProvider } from './providers/theme-provider'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -21,20 +22,24 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider>
-      <html lang='en'>
-        <body
-          className={cn(
-            'min-h-screen bg-background text-foreground font-sans antialiased',
-            fontSans.variable
-          )}
+    <html lang='en' suppressHydrationWarning>
+      <body
+        className={cn('min-h-screen font-sans antialiased', fontSans.variable)}
+      >
+        <ThemeProvider
+          attribute='class'
+          defaultTheme='light'
+          enableSystem
+          disableTransitionOnChange
         >
-          <Header />
-          <main className='container'>
-            <div className='mt-10'>{children}</div>
-          </main>
-        </body>
-      </html>
-    </ClerkProvider>
+          <ClerkProvider>
+            <Header />
+            <main className='container'>
+              <div className='mt-10'>{children}</div>
+            </main>
+          </ClerkProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   )
 }

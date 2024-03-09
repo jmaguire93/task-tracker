@@ -1,6 +1,6 @@
 'use client'
 
-import { addTodo } from '@/app/server-actions/addTodo'
+import { addTask } from '@/app/server-actions/add-task'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -19,11 +19,11 @@ import {
 
 const formSchema = z.object({
   name: z.string().min(5, {
-    message: 'Todo must be at least 5 characters.'
+    message: 'Task must be at least 5 characters.'
   })
 })
 
-export default function TodoForm() {
+export default function TaskForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,7 +33,7 @@ export default function TodoForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Type-safe and validated.
-    addTodo(values)
+    addTask(values)
     form.reset()
   }
 
@@ -48,15 +48,15 @@ export default function TodoForm() {
           name='name'
           render={({ field }) => (
             <FormItem className='grow'>
-              <FormLabel>Todo</FormLabel>
+              <FormLabel>Task</FormLabel>
               <FormControl>
-                <Input placeholder='Enter your todo...' {...field} />
+                <Input placeholder='Enter your task...' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type='submit'>Add Todo</Button>
+        <Button type='submit'>Add Task</Button>
       </form>
     </Form>
   )

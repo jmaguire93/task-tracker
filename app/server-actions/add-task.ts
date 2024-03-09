@@ -8,16 +8,16 @@ interface ValidatedFormData {
   name: string
 }
 
-export async function addTodo(formData: ValidatedFormData) {
+export async function addTask(formData: ValidatedFormData) {
   const { userId } = auth()
 
   if (!userId) return
 
   try {
-    const todoToAdd = { ...formData, userId }
+    const taskToAdd = { ...formData, userId }
     const xataClient = getXataClient()
 
-    await xataClient.db.todos.create(todoToAdd)
+    await xataClient.db.todos.create(taskToAdd)
 
     revalidatePath('/')
   } catch (error) {
