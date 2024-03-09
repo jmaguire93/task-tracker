@@ -2,6 +2,18 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+## Docker Setup for development
+
+Bring up the project:
+```bash
+   docker-compose -f docker-compose-dev.yml --compatibility up -d --remove-orphans
+```
+
+Bring down the project:
+```bash
+   docker-compose -f docker-compose-dev.yml --compatibility down
+```
+
 First, run the development server:
 
 ```bash
