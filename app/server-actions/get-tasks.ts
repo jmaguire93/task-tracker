@@ -7,5 +7,10 @@ export async function getTasksForUser(userId: string) {
     const xataClient = getXataClient()
 
     return xataClient.db.todos.filter({ userId }).getMany()
-  } catch (error) {}
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to retrieve the tasks: ${error.message}`)
+    }
+    throw new Error('An unexpected error occurred.')
+  }
 }

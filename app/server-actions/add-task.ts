@@ -21,6 +21,9 @@ export async function addTask(formData: ValidatedFormData) {
 
     revalidatePath('/')
   } catch (error) {
-    // TODO - Add toast messages when using shadcn/ui
+    if (error instanceof Error) {
+      throw new Error(`Failed to add task: ${error.message}`)
+    }
+    throw new Error('An unexpected error occurred.')
   }
 }

@@ -1,9 +1,10 @@
 import { cn } from '@/lib/utils'
-import { ClerkProvider } from '@clerk/nextjs'
 import type { Metadata } from 'next'
 import { Inter as FontSans } from 'next/font/google'
+import { Toaster } from 'sonner'
 import Header from './components/header'
 import './globals.css'
+import { ClerkProvider } from './providers/clerk-provider'
 import { ThemeProvider } from './providers/theme-provider'
 
 const fontSans = FontSans({
@@ -29,7 +30,6 @@ export default function RootLayout({
         <ThemeProvider
           attribute='class'
           defaultTheme='light'
-          enableSystem
           disableTransitionOnChange
         >
           <ClerkProvider>
@@ -39,6 +39,7 @@ export default function RootLayout({
             </main>
           </ClerkProvider>
         </ThemeProvider>
+        <Toaster richColors />
       </body>
     </html>
   )

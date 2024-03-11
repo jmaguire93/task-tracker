@@ -18,5 +18,10 @@ export async function updateName(formData: FormData, taskId: string) {
     await xataClient.db.todos.update(taskId, validatedForm)
 
     revalidatePath('/')
-  } catch (error) {}
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to update task: ${error.message}`)
+    }
+    throw new Error('An unexpected error occurred.')
+  }
 }

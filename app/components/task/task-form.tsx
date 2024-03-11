@@ -2,12 +2,6 @@
 
 import { addTask } from '@/app/server-actions/add-task'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-
 import {
   Form,
   FormControl,
@@ -16,6 +10,12 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { zodResolver } from '@hookform/resolvers/zod'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z } from 'zod'
 
 const formSchema = z.object({
   name: z.string().min(5, {
@@ -31,10 +31,16 @@ export default function TaskForm() {
     }
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Type-safe and validated.
-    addTask(values)
-    form.reset()
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      // Type-safe and validated.
+      await addTask(values)
+
+      toast.success('Successfully added the task.')
+      form.reset()
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to add the task.')
+    }
   }
 
   return (

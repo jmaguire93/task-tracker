@@ -17,6 +17,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { formatDistance } from 'date-fns'
 import React, { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 interface TaskItemProps {
   task: Task
@@ -32,24 +33,52 @@ export default function TaskItem(props: TaskItemProps) {
   const [createdTime, setCreatedTime] = useState('')
   const [updatedTime, setUpdatedTime] = useState('')
 
-  const handleCheckboxChange = (checked: boolean) => {
+  const handleCheckboxChange = async (checked: boolean) => {
     setIsCompleted(checked)
     const formData = new FormData()
     formData.append('completed', checked.toString())
-    updateCompleted(formData, task.id)
+
+    try {
+      // Type-safe and validated.
+      await updateCompleted(formData, task.id)
+
+      toast.success(
+        `Task has been marked as ${checked ? 'Completed' : 'Incomplete'}`
+      )
+      setIsEditing(false)
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to update the task.')
+    }
   }
 
-  const handleNameChange = () => {
+  const handleNameChange = async () => {
     const formData = new FormData()
     formData.append('name', name)
 
-    updateName(formData, task.id)
-    setIsEditing(false)
+    try {
+      // Type-safe and validated.
+      await updateName(formData, task.id)
+
+      toast.success('Successfully updated the task')
+      setIsEditing(false)
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to update the task.')
+    }
   }
 
   const handleKeyPress = (e: { key: string }) => {
     if (e.key === 'Enter') {
       handleNameChange()
+    }
+  }
+
+  const handleDeleteTask = async () => {
+    try {
+      await deleteTask(task.id)
+
+      toast.success('Successfully deleted the task.')
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to delete the task.')
     }
   }
 
@@ -106,7 +135,7 @@ export default function TaskItem(props: TaskItemProps) {
         <div className='justify-between flex-1 flex'>
           <Button
             type='submit'
-            onClick={() => deleteTask(task.id)}
+            onClick={handleDeleteTask}
             className='bg-red-500 hover:bg-red-700 font-bold'
           >
             Delete

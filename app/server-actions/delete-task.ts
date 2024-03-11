@@ -10,5 +10,10 @@ export async function deleteTask(taskId: string) {
     await xataClient.db.todos.delete(taskId)
 
     revalidatePath('/')
-  } catch (error) {}
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to delete task: ${error.message}`)
+    }
+    throw new Error('An unexpected error occurred.')
+  }
 }
