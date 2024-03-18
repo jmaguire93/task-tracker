@@ -1,9 +1,9 @@
 'use client'
 
-import { ClerkProvider } from '@clerk/nextjs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from 'next-themes'
 import React from 'react'
+import { ClerkProvider } from '../providers/clerk-provider'
 
 interface ProvidersProps {
   children: React.ReactNode
