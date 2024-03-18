@@ -2,10 +2,10 @@ import { cn } from '@/lib/utils'
 import type { Metadata } from 'next'
 import { Inter as FontSans } from 'next/font/google'
 import { Toaster } from 'sonner'
+import Footer from './components/footer'
 import Header from './components/header'
+import Providers from './components/providers'
 import './globals.css'
-import { ClerkProvider } from './providers/clerk-provider'
-import { ThemeProvider } from './providers/theme-provider'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -27,19 +27,16 @@ export default function RootLayout({
       <body
         className={cn('min-h-screen font-sans antialiased', fontSans.variable)}
       >
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='light'
-          disableTransitionOnChange
-        >
-          <ClerkProvider>
+        <Providers>
+          <div className='flex flex-col min-h-screen'>
             <Header />
-            <main className='container'>
+            <main className='container flex-1'>
               <div className='mt-10'>{children}</div>
             </main>
-          </ClerkProvider>
-        </ThemeProvider>
-        <Toaster richColors />
+            <Footer />
+          </div>
+          <Toaster richColors />
+        </Providers>
       </body>
     </html>
   )

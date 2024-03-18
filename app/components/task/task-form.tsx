@@ -1,6 +1,6 @@
 'use client'
 
-import { addTask } from '@/app/server-actions/add-task'
+import useCreateTask from '@/app/hooks/use-create-task'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -11,6 +11,7 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useUser } from '@clerk/nextjs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -31,16 +32,23 @@ export default function TaskForm() {
     }
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      // Type-safe and validated.
-      await addTask(values)
+  const { user } = useUser()
 
-      toast.success('Successfully added the task.')
-      form.reset()
-    } catch (error: unknown) {
-      toast.error((error as Error).message || 'Failed to add the task.')
+  const createTask = useCreateTask(user?.id)
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!user) {
+      return
     }
+
+    const result = await createTask.mutateAsync(values)
+
+    if (result?.error) {
+      return toast.error(result?.error)
+    }
+
+    form.reset()
+    toast.success('Successfully added the task.')
   }
 
   return (

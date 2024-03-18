@@ -18,7 +18,7 @@ export default function Header() {
               src='/logo/app-logo.png'
               alt='App Logo'
               width={40}
-              height={42}
+              height={40}
             />
           </Link>
           {user && isLoaded && (

@@ -1,19 +1,16 @@
 'use server'
 
+import { getErrorMessage } from '@/lib/utils'
 import { getXataClient } from '@/src/xata'
-import { revalidatePath } from 'next/cache'
 
 export async function deleteTask(taskId: string) {
   try {
     const xataClient = getXataClient()
 
-    await xataClient.db.todos.delete(taskId)
-
-    revalidatePath('/')
+    await xataClient.db.tasks.delete(taskId)
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Failed to delete task: ${error.message}`)
+    return {
+      error: getErrorMessage(error)
     }
-    throw new Error('An unexpected error occurred.')
   }
 }

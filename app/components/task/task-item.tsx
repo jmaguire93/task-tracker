@@ -1,8 +1,7 @@
 'use client'
 
-import { deleteTask } from '@/app/server-actions/delete-task'
-import { updateCompleted } from '@/app/server-actions/update-completed'
-import { updateName } from '@/app/server-actions/update-name'
+import useDeleteTask from '@/app/hooks/use-delete-task'
+import useUpdateTask from '@/app/hooks/use-update-task'
 import { Task } from '@/app/util/types/types'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,6 +14,7 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useUser } from '@clerk/nextjs'
 import { formatDistance } from 'date-fns'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -32,38 +32,46 @@ export default function TaskItem(props: TaskItemProps) {
   const [name, setName] = useState(task.name)
   const [createdTime, setCreatedTime] = useState('')
   const [updatedTime, setUpdatedTime] = useState('')
+  const { user } = useUser()
+  const deleteTask = useDeleteTask(user?.id)
+  const updateTask = useUpdateTask(user?.id)
 
   const handleCheckboxChange = async (checked: boolean) => {
-    setIsCompleted(checked)
     const formData = new FormData()
     formData.append('completed', checked.toString())
 
-    try {
-      // Type-safe and validated.
-      await updateCompleted(formData, task.id)
+    const result = await updateTask.mutateAsync({
+      formData: formData,
+      taskId: task.id
+    })
 
-      toast.success(
-        `Task has been marked as ${checked ? 'Completed' : 'Incomplete'}`
-      )
-      setIsEditing(false)
-    } catch (error: unknown) {
-      toast.error((error as Error).message || 'Failed to update the task.')
+    if (result?.error) {
+      return toast.error(result.error)
     }
+
+    setIsCompleted(checked)
+
+    toast.success(
+      `Task has been marked as ${checked ? 'Completed' : 'Incomplete'}`
+    )
   }
 
   const handleNameChange = async () => {
     const formData = new FormData()
     formData.append('name', name)
 
-    try {
-      // Type-safe and validated.
-      await updateName(formData, task.id)
+    const result = await updateTask.mutateAsync({
+      formData: formData,
+      taskId: task.id
+    })
 
-      toast.success('Successfully updated the task')
-      setIsEditing(false)
-    } catch (error: unknown) {
-      toast.error((error as Error).message || 'Failed to update the task.')
+    if (result?.error) {
+      return toast.error(result.error)
     }
+
+    setIsEditing(false)
+
+    toast.success('Successfully updated the task')
   }
 
   const handleKeyPress = (e: { key: string }) => {
@@ -73,13 +81,13 @@ export default function TaskItem(props: TaskItemProps) {
   }
 
   const handleDeleteTask = async () => {
-    try {
-      await deleteTask(task.id)
+    const result = await deleteTask.mutateAsync(task.id)
 
-      toast.success('Successfully deleted the task.')
-    } catch (error: unknown) {
-      toast.error((error as Error).message || 'Failed to delete the task.')
+    if (result?.error) {
+      return toast.error(result.error)
     }
+
+    toast.success('Successfully deleted the task.')
   }
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 'use server'
 
+import { getErrorMessage } from '@/lib/utils'
 import { getXataClient } from '@/src/xata'
 import { auth } from '@clerk/nextjs'
-import { revalidatePath } from 'next/cache'
 
 interface ValidatedFormData {
   name: string
@@ -17,13 +17,10 @@ export async function addTask(formData: ValidatedFormData) {
     const taskToAdd = { ...formData, userId }
     const xataClient = getXataClient()
 
-    await xataClient.db.todos.create(taskToAdd)
-
-    revalidatePath('/')
+    await xataClient.db.tasks.create(taskToAdd)
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Failed to add task: ${error.message}`)
+    return {
+      error: getErrorMessage(error)
     }
-    throw new Error('An unexpected error occurred.')
   }
 }

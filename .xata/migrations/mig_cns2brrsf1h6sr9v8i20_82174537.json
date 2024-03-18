@@ -1,0 +1,13 @@
+{
+  "id": "mig_cns2brrsf1h6sr9v8i20",
+  "parentID": "mig_cnkt31925r5l537taaa0",
+  "checksum": "1:82174537bf786b6cf7f55105d3f27bf92f1b646cd3789ef361e6c6e611ed5b76",
+  "operations": [
+    {
+      "renameTable": {
+        "newName": "tasks",
+        "oldName": "todos"
+      }
+    }
+  ]
+}
