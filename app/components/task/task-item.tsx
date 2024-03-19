@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { QueryObserverResult } from '@tanstack/react-query'
 import { formatDistance } from 'date-fns'
+import { LoaderIcon } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -29,7 +30,7 @@ interface TaskItemProps {
 export default function TaskItem(props: TaskItemProps) {
   const { task, index, userId, refetch } = props
 
-  const [updating, setUpdating] = useState<boolean>(false)
+  const [deleting, setDeleting] = useState<boolean>(false)
   const [isCompleted, setIsCompleted] = useState(task.completed)
   const [isEditing, setIsEditing] = useState(false)
   const [name, setName] = useState(task.name)
@@ -42,8 +43,6 @@ export default function TaskItem(props: TaskItemProps) {
     const formData = new FormData()
     formData.append('completed', checked.toString())
 
-    setUpdating(true)
-
     const result = await updateTask.mutateAsync({
       formData: formData,
       taskId: task.id
@@ -53,9 +52,8 @@ export default function TaskItem(props: TaskItemProps) {
       return toast.error(result.error)
     }
 
-    await refetch()
+    refetch()
     setIsCompleted(checked)
-    setUpdating(false)
 
     toast.success(
       `Task has been marked as ${checked ? 'Completed' : 'Incomplete'}`
@@ -66,8 +64,6 @@ export default function TaskItem(props: TaskItemProps) {
     const formData = new FormData()
     formData.append('name', name)
 
-    setUpdating(true)
-
     const result = await updateTask.mutateAsync({
       formData: formData,
       taskId: task.id
@@ -77,9 +73,8 @@ export default function TaskItem(props: TaskItemProps) {
       return toast.error(result.error)
     }
 
-    await refetch()
+    refetch()
     setIsEditing(false)
-    setUpdating(false)
 
     toast.success('Successfully updated the task')
   }
@@ -91,7 +86,7 @@ export default function TaskItem(props: TaskItemProps) {
   }
 
   const handleDeleteTask = async () => {
-    setUpdating(true)
+    setDeleting(true)
     const result = await deleteTask.mutateAsync(task.id)
 
     if (result?.error) {
@@ -99,7 +94,7 @@ export default function TaskItem(props: TaskItemProps) {
     }
 
     await refetch()
-    setUpdating(false)
+    setDeleting(false)
     toast.success('Successfully deleted the task.')
   }
 
@@ -117,11 +112,7 @@ export default function TaskItem(props: TaskItemProps) {
   }, [task.xata.createdAt, task.xata.updatedAt])
 
   return (
-    <Card
-      className={`${
-        updating ? 'opacity-70' : ''
-      } flex flex-col justify-between bg-secondary`}
-    >
+    <Card className='flex flex-col justify-between bg-secondary'>
       <CardHeader>
         <CardTitle>
           <div>
@@ -160,11 +151,11 @@ export default function TaskItem(props: TaskItemProps) {
         <div className='justify-between flex-1 flex'>
           <Button
             type='submit'
-            disabled={updating}
+            disabled={deleting}
             onClick={handleDeleteTask}
             className='bg-red-500 hover:bg-red-700 font-bold'
           >
-            Delete
+            {deleting ? <LoaderIcon className='animate-spin' /> : 'Delete'}
           </Button>
           <div className='flex items-center gap-2'>
             <Checkbox
