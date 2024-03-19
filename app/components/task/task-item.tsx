@@ -99,6 +99,8 @@ export default function TaskItem(props: TaskItemProps) {
   }
 
   useEffect(() => {
+    setName(task.name)
+    setIsCompleted(task.completed)
     setCreatedTime(
       formatDistance(new Date(task.xata.createdAt), new Date(), {
         addSuffix: true
@@ -109,7 +111,7 @@ export default function TaskItem(props: TaskItemProps) {
         addSuffix: true
       })
     )
-  }, [task.xata.createdAt, task.xata.updatedAt])
+  }, [task])
 
   return (
     <Card className='flex flex-col justify-between bg-secondary'>
