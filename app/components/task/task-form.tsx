@@ -1,6 +1,7 @@
 'use client'
 
 import useCreateTask from '@/app/hooks/use-create-task'
+import { Task } from '@/app/util/types/types'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -12,6 +13,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { QueryObserverResult } from '@tanstack/react-query'
+import { RefreshCwIcon } from 'lucide-react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -23,7 +26,13 @@ const formSchema = z.object({
   })
 })
 
-export default function TaskForm({ userId }: { userId: string }) {
+export default function TaskForm({
+  userId,
+  refetch
+}: {
+  userId: string
+  refetch: () => Promise<QueryObserverResult<Task[], Error>>
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,6 +53,7 @@ export default function TaskForm({ userId }: { userId: string }) {
       return toast.error(result?.error)
     }
 
+    refetch()
     form.reset()
     toast.success('Successfully added the task.')
   }
@@ -68,7 +78,13 @@ export default function TaskForm({ userId }: { userId: string }) {
           )}
         />
         <Button type='submit'>Add Task</Button>
+        {/* <Button variant='ghost' size='icon' onClick={refetch}>
+          <RefreshCwIcon />
+        </Button> */}
       </form>
+      {/* <Button variant='ghost' size='icon' onClick={refetch}>
+        <RefreshCwIcon />
+      </Button> */}
     </Form>
   )
 }

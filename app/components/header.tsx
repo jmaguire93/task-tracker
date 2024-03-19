@@ -19,14 +19,6 @@ export default async function Header() {
               height={40}
             />
           </Link>
-          {user && (
-            <Link
-              href='/dashboard'
-              className='ml-4  hover:text-accent-foreground'
-            >
-              Dashboard
-            </Link>
-          )}
         </div>
         <div className='flex items-center'>
           <div className='mr-2'>

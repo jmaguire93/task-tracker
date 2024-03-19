@@ -14,6 +14,7 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { QueryObserverResult } from '@tanstack/react-query'
 import { formatDistance } from 'date-fns'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -22,10 +23,11 @@ interface TaskItemProps {
   task: Task
   index: number
   userId: string
+  refetch: () => Promise<QueryObserverResult<Task[], Error>>
 }
 
 export default function TaskItem(props: TaskItemProps) {
-  const { task, index, userId } = props
+  const { task, index, userId, refetch } = props
 
   const [isCompleted, setIsCompleted] = useState(task.completed)
   const [isEditing, setIsEditing] = useState(false)
@@ -48,6 +50,7 @@ export default function TaskItem(props: TaskItemProps) {
       return toast.error(result.error)
     }
 
+    refetch()
     setIsCompleted(checked)
 
     toast.success(
@@ -68,6 +71,7 @@ export default function TaskItem(props: TaskItemProps) {
       return toast.error(result.error)
     }
 
+    refetch()
     setIsEditing(false)
 
     toast.success('Successfully updated the task')
@@ -86,6 +90,7 @@ export default function TaskItem(props: TaskItemProps) {
       return toast.error(result.error)
     }
 
+    refetch()
     toast.success('Successfully deleted the task.')
   }
 

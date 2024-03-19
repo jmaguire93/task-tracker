@@ -9,7 +9,8 @@ export default function useTasks(userId: string) {
   const {
     data: tasks,
     isLoading,
-    error
+    error,
+    refetch
   } = useQuery({
     queryKey,
     queryFn: () => getTasksForUser(userId) || []
@@ -18,6 +19,7 @@ export default function useTasks(userId: string) {
   return {
     tasks,
     isLoading,
-    error
+    error,
+    refetch
   }
 }
