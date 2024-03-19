@@ -9,7 +9,7 @@ export default function useUpdateTask(userId: string | undefined) {
 
   return useMutation({
     mutationFn: updateTask,
-    onSettled: () => {
+    onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey })
     }

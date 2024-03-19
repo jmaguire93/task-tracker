@@ -36,13 +36,13 @@ export default function Tasks({ userId }: { userId: string }) {
         )}
         )
       </h1>
-      <TaskForm />
+      <TaskForm userId={userId} />
       {isLoading ? (
         <div className='flex justify-center items-center'>
           <LoaderIcon className='animate-spin' />
         </div>
       ) : (
-        <TaskList serializedTasks={serializedTasks} />
+        <TaskList serializedTasks={serializedTasks} userId={userId} />
       )}
     </div>
   )

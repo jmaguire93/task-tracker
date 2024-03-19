@@ -11,7 +11,6 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useUser } from '@clerk/nextjs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -24,7 +23,7 @@ const formSchema = z.object({
   })
 })
 
-export default function TaskForm() {
+export default function TaskForm({ userId }: { userId: string }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,12 +31,10 @@ export default function TaskForm() {
     }
   })
 
-  const { user } = useUser()
-
-  const createTask = useCreateTask(user?.id)
+  const createTask = useCreateTask(userId)
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!user) {
+    if (!userId) {
       return
     }
 

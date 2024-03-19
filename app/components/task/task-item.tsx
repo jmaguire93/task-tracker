@@ -14,7 +14,6 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useUser } from '@clerk/nextjs'
 import { formatDistance } from 'date-fns'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -22,19 +21,19 @@ import { toast } from 'sonner'
 interface TaskItemProps {
   task: Task
   index: number
+  userId: string
 }
 
 export default function TaskItem(props: TaskItemProps) {
-  const { task, index } = props
+  const { task, index, userId } = props
 
   const [isCompleted, setIsCompleted] = useState(task.completed)
   const [isEditing, setIsEditing] = useState(false)
   const [name, setName] = useState(task.name)
   const [createdTime, setCreatedTime] = useState('')
   const [updatedTime, setUpdatedTime] = useState('')
-  const { user } = useUser()
-  const deleteTask = useDeleteTask(user?.id)
-  const updateTask = useUpdateTask(user?.id)
+  const deleteTask = useDeleteTask(userId)
+  const updateTask = useUpdateTask(userId)
 
   const handleCheckboxChange = async (checked: boolean) => {
     const formData = new FormData()

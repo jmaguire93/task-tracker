@@ -1,13 +1,11 @@
-'use client'
-
-import { UserButton, useUser } from '@clerk/nextjs'
+import { UserButton, currentUser } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { ThemeSwitcher } from './theme-switcher/theme-switcher'
 
-export default function Header() {
-  const { user, isLoaded } = useUser()
+export default async function Header() {
+  const user = await currentUser()
 
   return (
     <>
@@ -21,7 +19,7 @@ export default function Header() {
               height={40}
             />
           </Link>
-          {user && isLoaded && (
+          {user && (
             <Link
               href='/dashboard'
               className='ml-4  hover:text-accent-foreground'
@@ -34,7 +32,7 @@ export default function Header() {
           <div className='mr-2'>
             <ThemeSwitcher />
           </div>
-          {!user && isLoaded && (
+          {!user && (
             <>
               <Link href='/sign-in' className='hover:text-gray-200 mr-4'>
                 Sign In
@@ -44,7 +42,7 @@ export default function Header() {
               </Link>
             </>
           )}
-          {user && isLoaded && (
+          {user && (
             <div className='text-sm mr-3'>
               Welcome, {user.firstName || 'User'}
             </div>

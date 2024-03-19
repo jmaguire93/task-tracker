@@ -10,7 +10,7 @@ export default function useDeleteTask(userId: string | undefined) {
 
   return useMutation({
     mutationFn: deleteTask,
-    onSettled: () => {
+    onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey })
     }

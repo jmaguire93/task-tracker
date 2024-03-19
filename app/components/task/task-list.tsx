@@ -5,8 +5,9 @@ import React from 'react'
 import TaskItem from './task-item'
 
 export default function TaskList({
-  serializedTasks
-}: { serializedTasks: string }) {
+  serializedTasks,
+  userId
+}: { serializedTasks: string; userId: string }) {
   const tasks = JSON.parse(serializedTasks) as Task[]
 
   return (
@@ -16,7 +17,7 @@ export default function TaskList({
       ) : (
         <div className='mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 px-2'>
           {tasks.map((task, index) => (
-            <TaskItem index={index} key={task.id} task={task} />
+            <TaskItem index={index} key={task.id} task={task} userId={userId} />
           ))}
         </div>
       )}
