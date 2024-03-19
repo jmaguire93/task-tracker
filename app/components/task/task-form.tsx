@@ -53,7 +53,7 @@ export default function TaskForm({
       return toast.error(result?.error)
     }
 
-    await refetch()
+    refetch()
     form.reset()
     toast.success('Successfully added the task.')
   }
