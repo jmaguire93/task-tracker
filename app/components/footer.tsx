@@ -8,7 +8,7 @@ export default function Footer() {
         <span className='underline font-medium'>Josh Maguire</span>
       </small>
       <p className='text-xs'>
-        <span className='font-semibold'>About this website:</span> built with
+        <span className='font-semibold'>About this website:</span> Built with
         React & Next.js, TypeScript, Clerk, Tailwind CSS, shadcn/ui, Xata,
         hosted using Vercel.
       </p>

@@ -53,7 +53,7 @@ export default function TaskForm({
       return toast.error(result?.error)
     }
 
-    refetch()
+    await refetch()
     form.reset()
     toast.success('Successfully added the task.')
   }
@@ -78,13 +78,7 @@ export default function TaskForm({
           )}
         />
         <Button type='submit'>Add Task</Button>
-        {/* <Button variant='ghost' size='icon' onClick={refetch}>
-          <RefreshCwIcon />
-        </Button> */}
       </form>
-      {/* <Button variant='ghost' size='icon' onClick={refetch}>
-        <RefreshCwIcon />
-      </Button> */}
     </Form>
   )
 }

@@ -29,6 +29,7 @@ interface TaskItemProps {
 export default function TaskItem(props: TaskItemProps) {
   const { task, index, userId, refetch } = props
 
+  const [updating, setUpdating] = useState<boolean>(false)
   const [isCompleted, setIsCompleted] = useState(task.completed)
   const [isEditing, setIsEditing] = useState(false)
   const [name, setName] = useState(task.name)
@@ -41,6 +42,8 @@ export default function TaskItem(props: TaskItemProps) {
     const formData = new FormData()
     formData.append('completed', checked.toString())
 
+    setUpdating(true)
+
     const result = await updateTask.mutateAsync({
       formData: formData,
       taskId: task.id
@@ -50,8 +53,9 @@ export default function TaskItem(props: TaskItemProps) {
       return toast.error(result.error)
     }
 
-    refetch()
+    await refetch()
     setIsCompleted(checked)
+    setUpdating(false)
 
     toast.success(
       `Task has been marked as ${checked ? 'Completed' : 'Incomplete'}`
@@ -62,6 +66,8 @@ export default function TaskItem(props: TaskItemProps) {
     const formData = new FormData()
     formData.append('name', name)
 
+    setUpdating(true)
+
     const result = await updateTask.mutateAsync({
       formData: formData,
       taskId: task.id
@@ -71,8 +77,9 @@ export default function TaskItem(props: TaskItemProps) {
       return toast.error(result.error)
     }
 
-    refetch()
+    await refetch()
     setIsEditing(false)
+    setUpdating(false)
 
     toast.success('Successfully updated the task')
   }
@@ -84,13 +91,15 @@ export default function TaskItem(props: TaskItemProps) {
   }
 
   const handleDeleteTask = async () => {
+    setUpdating(true)
     const result = await deleteTask.mutateAsync(task.id)
 
     if (result?.error) {
       return toast.error(result.error)
     }
 
-    refetch()
+    await refetch()
+    setUpdating(false)
     toast.success('Successfully deleted the task.')
   }
 
@@ -108,7 +117,11 @@ export default function TaskItem(props: TaskItemProps) {
   }, [task.xata.createdAt, task.xata.updatedAt])
 
   return (
-    <Card className='flex flex-col justify-between bg-secondary'>
+    <Card
+      className={`${
+        updating ? 'opacity-70' : ''
+      } flex flex-col justify-between bg-secondary`}
+    >
       <CardHeader>
         <CardTitle>
           <div>
@@ -147,6 +160,7 @@ export default function TaskItem(props: TaskItemProps) {
         <div className='justify-between flex-1 flex'>
           <Button
             type='submit'
+            disabled={updating}
             onClick={handleDeleteTask}
             className='bg-red-500 hover:bg-red-700 font-bold'
           >
