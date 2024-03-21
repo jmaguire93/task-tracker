@@ -6,20 +6,8 @@ import { getTasksForUser } from '../server-actions/get-tasks'
 export default function useTasks(userId: string) {
   const queryKey = ['tasks', userId]
 
-  const {
-    data: tasks,
-    isLoading,
-    error,
-    refetch
-  } = useQuery({
+  return useQuery({
     queryKey,
     queryFn: () => getTasksForUser(userId) || []
   })
-
-  return {
-    tasks,
-    isLoading,
-    error,
-    refetch
-  }
 }

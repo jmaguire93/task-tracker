@@ -49,7 +49,8 @@ export default function TaskForm({
     const result = await createTask.mutateAsync(values)
 
     if (result?.error) {
-      return toast.error(result?.error)
+      toast.error(result?.error)
+      return
     }
 
     await refetch()

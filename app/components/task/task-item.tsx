@@ -49,7 +49,8 @@ export default function TaskItem(props: TaskItemProps) {
     })
 
     if (result?.error) {
-      return toast.error(result.error)
+      toast.error(result.error)
+      return
     }
 
     refetch()
@@ -70,7 +71,8 @@ export default function TaskItem(props: TaskItemProps) {
     })
 
     if (result?.error) {
-      return toast.error(result.error)
+      toast.error(result.error)
+      return
     }
 
     refetch()
@@ -90,7 +92,8 @@ export default function TaskItem(props: TaskItemProps) {
     const result = await deleteTask.mutateAsync(task.id)
 
     if (result?.error) {
-      return toast.error(result.error)
+      toast.error(result.error)
+      return
     }
 
     await refetch()
